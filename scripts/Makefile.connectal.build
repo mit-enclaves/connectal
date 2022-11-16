@@ -404,7 +404,7 @@ $(VFILE): $(addprefix obj/, $(patsubst %.bsv, %.bo, $(notdir $(TOPBSVFILE))))
 
 obj/Makefile: $(OBJMAKEFILE_DEP) syntax.timestamp
 	@mkdir -p obj
-	$(CONNECTALDIR)/scripts/bsvdepend.py -o obj/Makefile $(BSVDEFINES) --bsvpath=$(BSVPATH) --all $(TOPBSVFILE)
+	$(CONNECTALDIR)/scripts/bsvdepend.py -o obj/Makefile --bscflags="$(BSCFLAGS_PROJECT)" $(BSVDEFINES) --bsvpath=$(BSVPATH) --all $(TOPBSVFILE)
 
 $(DTOP)/bin/libconnectal-sim.so: $(SIM_OBJECTS) prepare_bin_target
 	$(Q)mkdir -p $(DTOP)/bin
@@ -418,7 +418,7 @@ bsim: prepare_bin_target $(DTOP)/bin/libconnectal-sim.so obj/mkXsimTop.ba
 
 
 build/checkpoints/to_aws/mkTop.SH_CL_routed.dcp: verilog
-	CONNECTALDIR=$(CONNECTALDIR) $(CONNECTALDIR)/scripts/aws/build.sh $(AWSFLAGS)
+	CONNECTALDIR=$(CONNECTALDIR) XCIFILES="$(XCIFILES)" $(CONNECTALDIR)/scripts/aws/build.sh $(AWSFLAGS)
 
 syntax.timestamp: $(BSVFILES)
 	@#$syntax.py uses environment variables: V INTERFACES BSVDEFINES_LIST DTOP DUT_NAME

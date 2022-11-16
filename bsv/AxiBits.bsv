@@ -132,7 +132,7 @@ interface AxiSlaveBits#(numeric type addrWidth, numeric type dataWidth, numeric 
     interface extraType   extra;
 endinterface
 
-interface Axi4MasterBits#(numeric type addrWidth, numeric type dataWidth, numeric type tagWidth, type extraType);
+interface Axi4MasterBitsOrig#(numeric type addrWidth, numeric type dataWidth, numeric type tagWidth, type extraType);
     method Bit#(addrWidth)     araddr();
     method Bit#(2)     arburst();
     method Bit#(4)     arcache();
@@ -170,6 +170,49 @@ interface Axi4MasterBits#(numeric type addrWidth, numeric type dataWidth, numeri
     method Bit#(tagWidth)     wid();
     method Bit#(1)     wlast();
     method Action      wready(Bit#(1) v);
+    method Bit#(TDiv#(dataWidth,8))     wstrb();
+    method Bit#(1)     wvalid();
+    interface extraType   extra;
+endinterface
+
+interface Axi4MasterBits#(numeric type addrWidth, numeric type dataWidth, numeric type tagWidth, type extraType);
+    method Bit#(addrWidth)     araddr();
+    method Bit#(2)     arburst();
+    method Bit#(4)     arcache();
+    method Bit#(1)     aresetn();
+    method Bit#(tagWidth)     arid();
+    method Bit#(8)     arlen();
+    method Bit#(2)     arlock();
+    method Bit#(3)     arprot();
+    method Bit#(4)     arqos();
+    (* prefix="" *)method Action      arready((* port="arready" *)Bit#(1) v);
+    method Bit#(3)     arsize();
+    method Bit#(1)     arvalid();
+    method Bit#(addrWidth)     awaddr();
+    method Bit#(2)     awburst();
+    method Bit#(4)     awcache();
+    method Bit#(tagWidth)     awid();
+    method Bit#(8)     awlen();
+    method Bit#(2)     awlock();
+    method Bit#(3)     awprot();
+    method Bit#(4)     awqos();
+    (* prefix="" *) method Action      awready((* port="awready" *)Bit#(1) v);
+    method Bit#(3)     awsize();
+    method Bit#(1)     awvalid();
+    (* prefix="" *)method Action      bid((* port="bid" *)Bit#(tagWidth) v);
+    method Bit#(1)     bready();
+    (* prefix="" *)method Action      bresp((* port="bresp" *)Bit#(2) v);
+    (* prefix="" *)method Action      bvalid((* port="bvalid" *)Bit#(1) v);
+    (* prefix="" *)method Action      rdata((* port="rdata" *)Bit#(dataWidth) v);
+    (* prefix="" *)method Action      rid((* port="rid" *)Bit#(tagWidth) v);
+    (* prefix="" *)method Action      rlast((* port="rlast" *)Bit#(1) v);
+    method Bit#(1)     rready();
+    (* prefix="" *)method Action      rresp((* port="rresp" *)Bit#(2) v);
+    (* prefix="" *)method Action      rvalid((* port="rvalid" *)Bit#(1) v);
+    method Bit#(dataWidth)     wdata();
+    method Bit#(tagWidth)     wid();
+    method Bit#(1)     wlast();
+    (* prefix="" *)method Action      wready((* port="wready" *) Bit#(1) v);
     method Bit#(TDiv#(dataWidth,8))     wstrb();
     method Bit#(1)     wvalid();
     interface extraType   extra;
@@ -273,7 +316,7 @@ interface AwsF1Extra;
     method Bit#(19) aruser;
 endinterface
 
-module mkAxi4MasterBits#(Axi4Master#(addrWidth,dataWidth,tagWidth) m)(Axi4MasterBits#(addrWidth,busDataWidth,busTagWidth,AwsF1Extra))
+module mkAxi4MasterBits#(Axi4Master#(addrWidth,dataWidth,tagWidth) m)(Axi4MasterBitsOrig#(addrWidth,busDataWidth,busTagWidth,AwsF1Extra))
     provisos (Add#(dataWidth,d__,busDataWidth),
               Div#(dataWidth,32,dataWidthWords),
     	      Add#(tagWidth,t__,busTagWidth),

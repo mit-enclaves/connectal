@@ -37,7 +37,7 @@ def getBsvPackages(bluespecdir):
         pkgs.append(os.path.splitext(os.path.basename(f))[0])
     return pkgs
 
-def bsvDependencies(bsvfile, allBsv=False, bluespecdir=None, argbsvpath=[], bsvdefine=[]):
+def bsvDependencies(bsvfile, allBsv=False, bluespecdir=None, argbsvpath=[], bsvdefine=[], bscflags=''):
     """Return the list of dependencies
     [(NAME,BSVFILENAME,PACKAGES,INCLUDES,SYNTHESIZEDMODULES)] of
     BSVFILE, adding the list BSVPATH to the directories to explore for
@@ -84,7 +84,8 @@ def bsvDependencies(bsvfile, allBsv=False, bluespecdir=None, argbsvpath=[], bsvd
         for var in bsvdefine:
             bsc_define_args.append('-D')
             bsc_define_args.append(var)
-        cp = subprocess.check_output(['bsc', '-E', '-p', bsc_search_path] + bsc_define_args + [bsvfilename])
+        bsc_split = bscflags.split()
+        cp = subprocess.check_output(['bsc', '-E', '-p', bsc_search_path] + bsc_define_args + bsc_split + [bsvfilename])
         preprocessed = cp.decode('utf8')
         packages = []
         includes = []

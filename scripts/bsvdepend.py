@@ -38,6 +38,7 @@ argparser.add_argument('--bsvpath', default=[], help='directories to add to bsc 
 argparser.add_argument('--bluespecdir', default=default_bluespecdir, help='BSC bluespec dir')
 argparser.add_argument('-o', '--output', help='Output Makefile', default='Makefile.bsv')
 argparser.add_argument('--all', help='Generate entries for all BSV files on path.', default=False, action='store_true')
+argparser.add_argument('--bscflags', default='', help='BSC Flags')
 
 makefiletemplate='''
 %(name)s_BO  = obj/%(name)s.bo
@@ -61,11 +62,13 @@ $(eval $(call BSV_V_RULE, $(%(name)s_MOD), $(%(name)s_V), $(%(name)s_BSV), $(%(n
 
 if __name__=='__main__':
     options = argparser.parse_args()
+    print("bscflags:", options.bscflags)
     (bsvdep,bsvpath) = bsvdependencies.bsvDependencies(options.bsvfile,
                                                        options.all,
                                                        options.bluespecdir,
                                                        options.bsvpath,
-                                                       options.bsvdefine)
+                                                       options.bsvdefine,
+                                                       options.bscflags)
 
     makef = open(options.output, 'w')
     makef.write('# BSV dependences\n')

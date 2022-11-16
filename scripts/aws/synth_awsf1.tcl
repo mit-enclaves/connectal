@@ -22,7 +22,38 @@ if [info exists AWSF1_CL_DEBUG_BRIDGE] {
 } else {
     set AWSF1_CL_DEBUG_BRIDGE 0
 }
-
+if [info exists AWSF1_CL_DEBUG_BRIDGE] {
+    if {$AWSF1_CL_DEBUG_BRIDGE == ""} {
+	set AWSF1_CL_DEBUG_BRIDGE 1
+    }
+    puts "AWSF1_CL_DEBUG_BRIDGE=$AWSF1_CL_DEBUG_BRIDGE"
+} else {
+    set AWSF1_CL_DEBUG_BRIDGE 0
+}
+if [info exists AWSF1_SYNC_FIFO] {
+    if {$AWSF1_SYNC_FIFO == ""} {
+        set AWSF1_SYNC_FIFO 1
+    }
+    puts "AWSF1_SYNC_FIFO=$AWSF1_SYNC_FIFO"
+} else {
+    set AWSF1_SYNC_FIFO 0
+}
+if [info exists AWSF1_FPU] {
+    if {$AWSF1_FPU == ""} {
+        set AWSF1_FPU 1
+    }
+    puts "AWSF1_FPU=$AWSF1_FPU"
+} else {
+    set AWSF1_FPU 0
+}
+if [info exists AWSF1_INT_MULDIV] {
+    if {$AWSF1_INT_MULDIV == ""} {
+        set AWSF1_INT_MULDIV 1
+    }
+    puts "AWSF1_INT_MULDIV=$AWSF1_INT_MULDIV"
+} else {
+    set AWSF1_INT_MULDIV 0
+}
 
 ########################################
 ## Generate clocks based on Recipe 
@@ -53,9 +84,11 @@ if {$AWSF1_CL_DEBUG_BRIDGE} {
     read_ip [list \
 	     "$CONNECTALDIR/out/awsf1/ila_connectal_1/ila_connectal_1.xci" \
 	     "$CONNECTALDIR/out/awsf1/ila_connectal_2/ila_connectal_2.xci" \
-	     "$CONNECTALDIR/out/awsf1/ila_connectal_3/ila_connectal_3.xci" \
-	     "$CONNECTALDIR/out/awsf1/axi_protocol_checker_0/axi_protocol_checker_0.xci" \
 	    ]
+}
+
+foreach xcifile $::env(XCIFILES) {
+    read_ip $xcifile
 }
 
 #---- End of section replaced by User ----

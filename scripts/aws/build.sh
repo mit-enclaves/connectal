@@ -21,6 +21,10 @@ if [ "$AWS_FPGA_REPO_DIR" == "" ]; then
 	. hdk_setup.sh
 	popd
     fi
+else 
+    pushd "$AWS_FPGA_REPO_DIR"
+    . hdk_setup.sh
+    popd
 fi
 
 BUILD_DIR=`pwd`

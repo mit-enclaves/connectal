@@ -77,6 +77,6 @@ if [ "$RUNPARAM" != "" ]; then
     exit $status
 else
     ## FIXME
-    timeout 3m catchsegv $1; status=$?
+    timeout 3m $1; status=$?
     exit $status
 fi
